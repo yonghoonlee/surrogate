@@ -9,7 +9,7 @@ Create anaconda environment
 ```
 conda create -y --name surrogate python=3.8
 conda activate surrogate
-conda install -y -c conda-forge matplotlib mpi4py numpy scipy setuptools smt pip pyyaml vtk
+conda install -y -c conda-forge matplotlib mpi4py numpy scipy setuptools smt pip pyyaml
 ```
 
 Clone this repository and install
