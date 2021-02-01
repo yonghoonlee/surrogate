@@ -1,0 +1,34 @@
+!.gitignore
+
+# IDE-related
+*.code-workspace
+
+# Python-related
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+*.manifest
+*.spec
+*.egg-info/
+
+# OS-related
+build/
+*.so
+*.dylib
+*.dll
+*.exe
+*.app
+*.pdf
+*.png
+slprj/
+.autosave
+.DS_Store
+.cache
+*.log
+*.swp
+
+# VTK-related
+*.vtp
+
+
