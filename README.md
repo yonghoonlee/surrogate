@@ -15,8 +15,8 @@ conda install -y -c conda-forge matplotlib mpi4py numpy scipy setuptools smt pip
 Clone this repository and install
 
 ```
-git clone ...
-cd ...
+git clone https://github.com/yonghoonlee/surrogate.git
+cd surrogate
 python setup.py develop
 ```
 
