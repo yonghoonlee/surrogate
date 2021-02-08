@@ -1,6 +1,7 @@
 !.gitignore
 
 # IDE-related
+.vscode/
 *.code-workspace
 
 # Python-related
