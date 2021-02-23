@@ -27,6 +27,7 @@ metadata = dict(
         'numpy',
         'scipy',
         'smt',
+        'pyDOE2',
         'pyyaml',
     ],
     python_requires = '>=3.8',

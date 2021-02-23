@@ -6,6 +6,7 @@ import numpy as np
 from copy import deepcopy
 from smt.surrogate_models import KRG
 from smt.sampling_methods import LHS
+import pyDOE2 as DOE
 
 class model(object):
     def __init__(self, **kwargs):
@@ -584,15 +585,27 @@ class model(object):
                 fn[m0, :] = 0.0
             f += fn
         return f
-
-
-
-
-
-
-
-    def sampling(self, method='LHS', )
-
+    '''
+    sampling method
+    '''
+    def sampling(self, nx, xlimits, method='LHS'):
+        '''
+        create nx samples bounded by xlimits using specified method.
+        xlimits defines lb and ub, in np.array([[LB1, UB1], [LB2, UB2], ...]) format.
+        method = 'LHS': Latin hypercube sampling, 'CCD': centralized composite design,
+                 'PBD': Plackett-Burman design, 
+        '''
+        n_var = xlimits.shape[0]
+        if method.lower() == 'lhs':
+            x = DOE.lhs(n_var, samples=nx, criterion='correlation')
+        elif method.lower() == 'ccd':
+            if n_var > 8:
+                raise ValueError('number of variables is TOO LARGE for centralized composite design (CCD).')
+            if n_var > 7:
+                warnings.warn('number of variables is TOO LARGE for centralized composite design (CCD).')
+            x = DOE.ccdesign(n_var, center=(0,1), alpha='rotatable', face='inscribed')
+        elif method.lower() == 'pbd':
+            
 
 
 
