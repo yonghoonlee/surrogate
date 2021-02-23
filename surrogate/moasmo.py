@@ -593,11 +593,12 @@ class model(object):
         create nx samples bounded by xlimits using specified method.
         xlimits defines lb and ub, in np.array([[LB1, UB1], [LB2, UB2], ...]) format.
         method = 'LHS': Latin hypercube sampling, 'CCD': centralized composite design,
-                 'PBD': Plackett-Burman design, 
+                 'PBD': Plackett-Burman design, 'PB-CCD': Plackett-Burman centralized composite design
         '''
         n_var = xlimits.shape[0]
+        # Sampling
         if method.lower() == 'lhs':
-            x = DOE.lhs(n_var, samples=nx, criterion='correlation')
+            x = DOE.lhs(n_var, samples=nx, criterion='correlation')*2.0 - 1.0
         elif method.lower() == 'ccd':
             if n_var > 8:
                 raise ValueError('number of variables is TOO LARGE for centralized composite design (CCD).')
@@ -605,7 +606,23 @@ class model(object):
                 warnings.warn('number of variables is TOO LARGE for centralized composite design (CCD).')
             x = DOE.ccdesign(n_var, center=(0,1), alpha='rotatable', face='inscribed')
         elif method.lower() == 'pbd':
-            
+            x = DOE.pbdesign(n_var)
+        elif method.lower() in ['pb-ccd', 'pbccd']:
+            l = np.sqrt(n_var)
+            x = DOE.pbdesign(n_var)/l
+            x = np.append(x, -x/2.0, axis=0)
+            for idx in range(0, n_var):
+                z = np.zeros((1,n_var))
+                z[0,idx] = 1.0
+                x = np.append(x, z, axis=0)
+                z[0,idx] = -1.0
+                x = np.append(x, z, axis=0)
+            x = np.append(x, np.zeros((1, n_var)), axis=0)
+        # Scale
+        for idx in range(0, xlimits.shape[0]):
+            x[:,idx] = (x[:,idx] + 1.0)/2.0*(xlimits[idx,1] - xlimits[idx,0]) + xlimits[idx,0]
+        # Return
+        return x
 
 
 
@@ -618,14 +635,16 @@ def six_hump_camel_function(x):
 if __name__ == '__main__':
     a = model()
     xlimits1 = np.array([[-5.0, 5.0],[-2.0,2.0]])
-    smp1 = LHS(xlimits=xlimits1, criterion='centermaximin')
-    x1 = smp1(50)
+    #smp1 = LHS(xlimits=xlimits1, criterion='centermaximin')
+    #x1 = smp1(50)
+    x1 = a.sampling(None, xlimits1, method='PB-CCD')
     f1 = six_hump_camel_function(x1)
     a.set_x(x1, xlimits=xlimits1, level=-1)
     a.set_f(f1, level=-1)
     xlimits2 = np.array([[-2.0, 2.0],[-1.0,1.0]])
-    smp2 = LHS(xlimits=xlimits2, criterion='centermaximin')
-    x2 = smp2(50)
+    #smp2 = LHS(xlimits=xlimits2, criterion='centermaximin')
+    #x2 = smp2(50)
+    x2 = a.sampling(30, xlimits2, method='LHS')
     f2 = six_hump_camel_function(x2)
     a.set_x(x2, xlimits=xlimits2, level=-1)
     a.set_f(f2, level=-1)
