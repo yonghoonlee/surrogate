@@ -515,6 +515,12 @@ class model(object):
         elif level == 0:
             # points from deepest level
             sm = self._sm
+            if len_sm == len_x:
+                sm[-1] = None
+            elif len_sm + 1 == len_x:
+                sm.append(None)
+            else:
+                raise ValueError('sm dimension wrong.')
             idx_KRG = 0
             for idx in range(0, len_sm):
                 if type(sm[idx]) == KRG:
