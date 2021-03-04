@@ -489,7 +489,7 @@ class model(object):
             # train model for points from all levels
             sm = []
             for idx in range(0, len_x):
-                sm_tmp = KRG()
+                sm_tmp = KRG(print_global=False)
                 x = deepcopy(self._x[idx])
                 f = deepcopy(self._f[idx])
                 xlimits = deepcopy(self._xlimits[idx])
@@ -528,7 +528,7 @@ class model(object):
                 else:
                     break
             for idx in range(idx_KRG, len_x):
-                sm_tmp = KRG()
+                sm_tmp = KRG(print_global=False)
                 x = deepcopy(self._x[idx])
                 f = deepcopy(self._f[idx])
                 xlimits = deepcopy(self._xlimits[idx])
