@@ -489,7 +489,7 @@ class model(object):
             # train model for points from all levels
             sm = []
             for idx in range(0, len_x):
-                sm_tmp = KRG()
+                sm_tmp = KRG(print_global=False)
                 x = deepcopy(self._x[idx])
                 f = deepcopy(self._f[idx])
                 xlimits = deepcopy(self._xlimits[idx])
@@ -515,6 +515,12 @@ class model(object):
         elif level == 0:
             # points from deepest level
             sm = self._sm
+            if len_sm == len_x:
+                sm[-1] = None
+            elif len_sm + 1 == len_x:
+                sm.append(None)
+            else:
+                raise ValueError('sm dimension wrong.')
             idx_KRG = 0
             for idx in range(0, len_sm):
                 if type(sm[idx]) == KRG:
@@ -522,7 +528,7 @@ class model(object):
                 else:
                     break
             for idx in range(idx_KRG, len_x):
-                sm_tmp = KRG()
+                sm_tmp = KRG(print_global=False)
                 x = deepcopy(self._x[idx])
                 f = deepcopy(self._f[idx])
                 xlimits = deepcopy(self._xlimits[idx])
