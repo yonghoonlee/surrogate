@@ -8,6 +8,45 @@ from smt.surrogate_models import KRG
 from smt.sampling_methods import LHS
 import pyDOE2 as DOE
 
+class asm_result:
+    def __init__(self):
+        self._result = []
+        self._x_predicted = []
+        self._f_predicted = []
+        self._c_predicted = []
+        self._cv_predicted = []
+        self._x_true = []
+        self._f_true = []
+        self._c_true = []
+        self._cv_true = []
+    
+    def get_result(self, iter):
+        return self._result[iter-1]
+    
+    def set_result(self, result, iter=-1):
+        '''
+        iter = -1: append result in the self.result list
+        iter = 0 or len(self.result): overwrite result of latest iteration
+        iter < len(self.result): overwrite result of specified iteration
+        '''
+        len_result = len(self._result)
+        constr = [v for val in result.constr for v in val]
+        constr = np.array(constr[0:-result.x.shape[0]])
+        if (iter == len_result + 1) or (iter == -1):
+            self._result.append(result)
+            self._x_predicted.append(result.x)
+            self._f_predicted.append(result.fun)
+            self._c_predicted.append(constr)
+        elif (iter == len_result) or (iter == 0):
+            self._result[-1] = result
+        elif iter < len_result:
+            self._result[iter-1] = result
+        else:
+            raise ValueError('iteration number wrong.')
+            
+    result = property(get_result, set_result)
+    
+
 class model(object):
     def __init__(self, **kwargs):
         self._x = []
