@@ -45,7 +45,7 @@ class asm_result:
             raise ValueError('iteration number wrong.')
             
     result = property(get_result, set_result)
-    
+
 
 class model(object):
     def __init__(self, **kwargs):
@@ -146,7 +146,7 @@ class model(object):
             if (((x_new.shape[1] == self._x[-1].shape[1])
             and (xlimits_new.shape[0] == self._xlimits[-1].shape[0])
             ) and (xlimits_new.shape[0] == x_new.shape[1])):
-                n_var = xlimits_new[0]
+                n_var = xlimits_new.shape[0]
                 self._x[-1] = np.append(self._x[-1], x_new, axis=0)
                 self._xlimits[-1] = np.append(
                     np.min(
@@ -174,7 +174,7 @@ class model(object):
             if (((x_new.shape[1] == self._x[-1].shape[1])
             and (xlimits_new.shape[0] == self._xlimits[-1].shape[0])
             ) and (xlimits_new.shape[0] == x_new.shape[1])):
-                n_var = xlimits_new[0]
+                n_var = xlimits_new.shape[0]
                 self._x[level-1] = np.append(self._x[level-1], x_new, axis=0)
                 self._xlimits[level-1] = np.append(
                     np.min(
