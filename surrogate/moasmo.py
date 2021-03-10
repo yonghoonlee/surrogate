@@ -633,7 +633,7 @@ class model(object):
     '''
     sampling method
     '''
-    def sampling(self, nx, xlimits, method='LHS'):
+    def sampling(self, nx, xlimits, method='LHS', random_seed=10000):
         '''
         create nx samples bounded by xlimits using specified method.
         xlimits defines lb and ub, in np.array([[LB1, UB1], [LB2, UB2], ...]) format.
@@ -643,7 +643,7 @@ class model(object):
         n_var = xlimits.shape[0]
         # Sampling
         if method.lower() == 'lhs':
-            x = DOE.lhs(n_var, samples=nx, criterion='correlation')*2.0 - 1.0
+            x = DOE.lhs(n_var, samples=nx, criterion='correlation', random_state=random_seed)*2.0 - 1.0
         elif method.lower() == 'ccd':
             if n_var > 8:
                 raise ValueError('number of variables is TOO LARGE for centralized composite design (CCD).')
