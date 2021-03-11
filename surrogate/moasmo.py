@@ -30,8 +30,13 @@ class asm_result:
         iter < len(self.result): overwrite result of specified iteration
         '''
         len_result = len(self._result)
-        constr = [v for val in result.constr for v in val]
-        constr = np.array(constr[0:-result.x.shape[0]])
+        if hasattr(result,'constr'):
+            constr = [v for val in result.constr for v in val]
+            constr = np.array(constr[0:-result.x.shape[0]])
+        elif hasattr(result,'maxcv'):
+            constr = result.maxcv
+        else:
+            constr = 0.0
         if (iter == len_result + 1) or (iter == -1):
             self._result.append(result)
             self._x_predicted.append(result.x)
